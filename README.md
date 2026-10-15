@@ -29,7 +29,7 @@
 
 ## Деплой
 
-Сервер `129.101.124.198`, проект в `/opt/baytur-hub`, порт приложения `8081`, конфиг nginx — `docker/nginx/baytur.kg.conf`. Основной адрес — `https://baytur.kg`, `www` отдаёт 301.
+Сервер `129.101.124.198`, проект в `/opt/baytur-hub`, порт приложения `8093` (8080, 8081, 8092, 8000 заняты соседями), конфиг nginx — `docker/nginx/baytur.kg.conf`. Основной адрес — `https://baytur.kg`, `www` отдаёт 301.
 
 ```bash
 cd /opt/baytur-hub && git pull
@@ -360,7 +360,7 @@ docker compose -f docker-compose.prod.yml up --build -d
 
 | | dev | prod |
 |---|---|---|
-| Сервер | runserver | gunicorn, 2 воркера, timeout 120 |
+| Сервер | runserver | gunicorn, 1 процесс × 4 потока, timeout 60 |
 | Настройки | `core.settings.dev` | `core.settings.prod` |
 | Рестарт | нет | `restart: always` |
 | Порт Django | `127.0.0.1:8084` | `127.0.0.1:8000` |

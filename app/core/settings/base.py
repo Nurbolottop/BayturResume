@@ -31,6 +31,10 @@ CSRF_COOKIE_SECURE = True
 # не из домена запроса, иначе www-вариант или IP попадут в индекс как дубли.
 SITE_URL = os.getenv('SITE_URL', 'https://baytur.kg').rstrip('/')
 
+# Куда уводить адреса, которых на хабе нет (наследие копии сайта курорта на этом домене).
+# Пусто — обычная 404.
+LEGACY_REDIRECT_URL = os.getenv('LEGACY_REDIRECT_URL', '').rstrip('/')
+
 # =============================================================================
 # APPLICATIONS (ПРИЛОЖЕНИЯ)
 # =============================================================================
@@ -67,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.base.middleware.LegacyRedirectMiddleware',
 ]
 
 # =============================================================================

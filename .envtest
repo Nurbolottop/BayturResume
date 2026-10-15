@@ -52,6 +52,10 @@ CSRF_TRUSTED_ORIGINS=https://example.com,http://127.0.0.1
 # строятся canonical, sitemap и микроразметка — не из домена запроса.
 SITE_URL=https://example.com
 
+# [МЕНЯТЬ] Куда переадресовывать адреса, которых нет на сайте (301 на тот же путь).
+# Пусто — обычная 404. На baytur.kg — https://resort.baytur.kg
+LEGACY_REDIRECT_URL=
+
 # [МЕНЯТЬ] при необходимости
 LANGUAGE_CODE=ru
 TIME_ZONE=Asia/Bishkek
