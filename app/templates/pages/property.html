@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}{% if property.seo_title %}{{ property.seo_title }}{% else %}{{ property.name }} — {{ property.region }}{% endif %} | {{ company.NAME }}{% endblock %}
+{% block description %}{{ property.seo_description|default:property.lead }}{% endblock %}
+{% block og_title %}{{ property.name }} — {{ property.region }}{% endblock %}
+{% block og_description %}{{ property.lead }}{% endblock %}
+
+{% block hero %}
+<section class="photo photo--full on-photo">
+  <img class="photo__img" src="{{ property.image_url }}"{% if property.static_image and not property.image %} srcset="{{ property.image_small_url }} 960w, {{ property.image_url }} 1920w" sizes="100vw"{% endif %} alt="{{ property.name }}, {{ property.region }}" fetchpriority="high">
+  <div class="photo__content">
+    <div class="wrap">
+      {% include 'include/crumbs.html' %}
+      <span class="kicker">{{ property.kind }} · {{ property.region }}{% if property.season %} · {{ property.season }}{% endif %}</span>
+      <h1>{{ property.name }}</h1>
+      <p class="lead">{{ property.lead }}</p>
+      <div class="actions">
+        <a class="btn btn--light" href="{{ property.site_url }}">{{ property.link_text }} →</a>
+        {% if property.link_note %}<span class="note">{{ property.link_note }}</span>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="wrap article-layout">
+    <div class="prose">{{ property.body|safe }}</div>
+    <aside class="aside">
+      {% if property.facts_list %}
+      <dl class="facts">
+        {% for label, value in property.facts_list %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
+      </dl>
+      {% endif %}
+      {% include 'include/property_contacts.html' with p=property full=True %}
+    </aside>
+  </div>
+</section>
+
+{% if history %}
+<section class="section section--soft">
+  <div class="wrap">
+    <div class="section__head"><div><span class="kicker">История</span><h2 style="margin-top:16px">Из истории места</h2></div><a class="link" href="/history/">Вся история компании →</a></div>
+    <div class="history-teaser">
+      {% for e in history %}<div><div class="year-small">{{ e.year }}</div><h3>{{ e.title }}</h3>{% if e.text %}<p>{{ e.text|striptags|truncatechars:140 }}</p>{% endif %}</div>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="band on-photo">
+  <img class="photo__img" src="{{ property.image_url }}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+  <div class="wrap">
+    <span class="kicker">{{ property.site_host }}</span>
+    <h2>Цены, свободные даты и бронирование</h2>
+    <p>Всё это — на официальном сайте объекта. Сайт компании рассказывает о группе и не принимает бронирования.</p>
+    <a class="btn btn--light" href="{{ property.site_url }}">{{ property.link_text }} →</a>
+  </div>
+</section>
+
+{% if posts %}
+<section class="section">
+  <div class="wrap">
+    <div class="section__head"><div><span class="kicker">Публикации</span><h2 style="margin-top:16px">Об этом месте</h2></div><a class="link" href="/news/">Все публикации →</a></div>
+    <div class="posts">{% for post in posts %}{% include 'include/post_card.html' %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section section--soft">
+  <div class="wrap">
+    <div class="section__head"><div><span class="kicker">Ещё</span><h2 style="margin-top:16px">Другие места «Байтура»</h2></div></div>
+    {% for p in others %}
+    <article class="feature">
+      <a class="feature__img" href="{{ p.get_absolute_url }}" tabindex="-1" aria-hidden="true"><img src="{{ p.image_small_url }}" alt="" loading="lazy" width="960" height="720"></a>
+      <div class="feature__text">
+        <span class="feature__num">{{ p.kind }} · {{ p.region }}</span>
+        <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+        <p>{{ p.lead }}</p>
+        <div class="actions"><a class="btn btn--dark" href="{{ p.get_absolute_url }}">Об объекте</a></div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

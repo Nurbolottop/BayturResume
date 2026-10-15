@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.seo_title|default:post.title }} | {{ company.NAME }}{% endblock %}
+{% block description %}{{ post.description }}{% endblock %}
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_description %}{{ post.description }}{% endblock %}
+
+{% block hero %}
+<section class="photo photo--page on-photo">
+  <img class="photo__img" src="{{ post.cover_url }}" alt="{{ post.cover_alt }}" fetchpriority="high">
+  <div class="photo__content">
+    <div class="wrap">
+      {% include 'include/crumbs.html' %}
+      <div class="meta"><span class="cat">{{ post.category }}</span><time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:'j E Y' }}</time></div>
+      <h1>{{ post.title }}</h1>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<article class="section">
+  <div class="wrap">
+    <div class="article-layout">
+      <div class="prose">
+        <p class="standfirst">{{ post.excerpt }}</p>
+        {{ post.body|safe }}
+      </div>
+      <aside class="aside">
+        {% for p in post.properties.all %}
+        <div class="contact-col">
+          <span class="kicker">{{ p.region }}</span>
+          <h3>{{ p.name }}</h3>
+          <p style="color:var(--muted);font-size:.95rem">{{ p.lead }}</p>
+          <a class="link" href="{{ p.site_url }}">{{ p.link_text }}</a>
+        </div>
+        {% endfor %}
+      </aside>
+    </div>
+  </div>
+</article>
+
+{% if more %}
+<section class="section">
+  <div class="wrap">
+    <div class="section__head"><h2>Читайте также</h2><a class="link" href="/news/">Все публикации →</a></div>
+    <div class="posts">{% for post in more %}{% include 'include/post_card.html' %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

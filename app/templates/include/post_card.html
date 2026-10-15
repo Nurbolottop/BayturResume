@@ -1,0 +1,6 @@
+<a class="post-card" href="{{ post.get_absolute_url }}">
+  <div class="post-card__img"><img src="{{ post.cover_small_url }}" alt="{{ post.cover_alt }}" loading="lazy" width="960" height="720"></div>
+  <div class="meta"><span class="cat">{{ post.category }}</span><time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:'j E Y' }}</time></div>
+  <h3>{{ post.title }}</h3>
+  <p>{{ post.excerpt|truncatechars:160 }}</p>
+</a>

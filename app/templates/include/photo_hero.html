@@ -1,0 +1,12 @@
+{% comment %} Фото-шапка внутренних страниц: image, kicker, title, lead {% endcomment %}
+<section class="photo photo--page on-photo">
+  <img class="photo__img" src="{{ image }}" alt="" fetchpriority="high">
+  <div class="photo__content">
+    <div class="wrap">
+      {% include 'include/crumbs.html' %}
+      {% if kicker %}<span class="kicker">{{ kicker }}</span>{% endif %}
+      <h1>{{ title }}</h1>
+      {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+    </div>
+  </div>
+</section>

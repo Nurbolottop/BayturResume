@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Контакты и реквизиты компании «{{ company.NAME }}»{% endblock %}
+{% block description %}Телефоны, почта и адрес компании «Байтур», реквизиты {{ company.LEGAL_NAME }} и контакты курорта на Иссык-Куле, кымызолечебницы в Суусамыре и горнолыжной базы на Тоо-Ашуу.{% endblock %}
+{% block og_title %}Контакты «Байтура»{% endblock %}
+
+{% block hero %}{% static 'img/ski-panorama-1920.webp' as img %}
+{% include 'include/photo_hero.html' with image=img kicker='Связаться' title='Контакты' lead='Бронирование и вопросы о проживании — напрямую в объект: так быстрее. Общие вопросы о компании — по телефонам и почте ниже.' %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="wrap">
+    <div class="section__head"><h2>Объекты</h2></div>
+    <div class="contact-grid">
+      {% for p in properties %}{% include 'include/property_contacts.html' with full=True %}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--rule">
+  <div class="wrap split">
+    <div>
+      <h2>Компания</h2>
+      <ul class="contact-list" style="margin-top:24px">
+        {% for phone in company.PHONES %}<li><a class="big" href="tel:{{ phone|cut:' ' }}">{{ phone }}</a></li>{% endfor %}
+        <li><a href="mailto:{{ company.EMAIL }}">{{ company.EMAIL }}</a></li>
+      </ul>
+    </div>
+    <dl class="requisites">
+      <div><dt>Юридическое лицо</dt><dd>{{ company.LEGAL_NAME }}</dd></div>
+      <div><dt>ИНН</dt><dd>{{ company.INN }}</dd></div>
+      <div><dt>ОКПО</dt><dd>{{ company.OKPO }}</dd></div>
+      <div><dt>Юридический адрес</dt><dd>{{ company.ADDRESS_LINE }}</dd></div>
+    </dl>
+  </div>
+</section>
+{% endblock %}

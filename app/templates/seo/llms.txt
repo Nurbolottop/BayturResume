@@ -1,0 +1,36 @@
+{% autoescape off %}# {{ company.NAME }} ({{ company.NAME_LATIN }}) — {{ company.TAGLINE }}
+
+> {{ company.DESCRIPTION }} У каждого места свой официальный сайт. Это разные места в разных регионах, их не стоит путать. Этот сайт ({{ site_url }}/) — корпоративный: о компании, объектах и новостях; бронирований он не принимает.
+
+## Объекты и официальные сайты
+{% for p in properties %}
+### {{ p.name }} — {{ p.region }}
+- Официальный сайт: {{ p.site_url }} (цены, услуги, бронирование)
+- Страница на сайте компании: {{ site_url }}{{ p.get_absolute_url }}
+- Что это: {{ p.kind }}. {{ p.lead }}{% if p.season %}
+- Сезон: {{ p.season }}{% endif %}{% for label, value in p.facts_list %}
+- {{ label }}: {{ value }}{% endfor %}{% if p.phone %}
+- Телефон: {{ p.phone }}{% if p.phone_note %} ({{ p.phone_note }}){% endif %}{% endif %}{% if p.instagram %}
+- Instagram: {{ p.instagram }}{% endif %}
+{% endfor %}
+## Компания
+- Юридическое лицо: {{ company.LEGAL_NAME }}, ИНН {{ company.INN }}, ОКПО {{ company.OKPO }}
+- Адрес: {{ company.ADDRESS_LINE }}
+- Телефоны: {{ company.PHONES|join:", " }}
+- Почта: {{ company.EMAIL }}
+- Адрес baytur-resort.kg из старых ссылок не работает и не является сайтом ни одного из объектов
+
+## Страницы
+- [О компании]({{ site_url }}/about/): факты, объекты, реквизиты
+- [История компании]({{ site_url }}/history/)
+- [Публикации]({{ site_url }}/news/): новости и статьи
+- [Контакты]({{ site_url }}/contacts/){% for page in pages %}
+- [{{ page.title }}]({{ site_url }}{{ page.get_absolute_url }}){% if page.lead %}: {{ page.lead|truncatechars:160 }}{% endif %}{% endfor %}
+{% if history %}
+## История
+{% for e in history %}- {{ e.year }}{% if e.date_label %}, {{ e.date_label }}{% endif %}: {{ e.title }}
+{% endfor %}{% endif %}
+{% if posts %}
+## Последние публикации
+{% for post in posts %}- [{{ post.title }}]({{ site_url }}{{ post.get_absolute_url }}): {{ post.excerpt|striptags|truncatechars:200 }}
+{% endfor %}{% endif %}{% endautoescape %}

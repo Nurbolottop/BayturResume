@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ page.seo_title|default:page.title }} | {{ company.NAME }}{% endblock %}
+{% block description %}{{ page.seo_description|default:page.lead|default:company.DESCRIPTION }}{% endblock %}
+{% block og_title %}{{ page.title }}{% endblock %}
+
+{% block hero %}
+{% include 'include/photo_hero.html' with image=page.cover_url kicker=company.NAME title=page.title lead=page.lead %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="wrap"><div class="prose">{{ page.body|safe }}</div></div>
+</section>
+{% endblock %}

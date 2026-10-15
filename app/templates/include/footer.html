@@ -1,0 +1,32 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">{{ company.NAME }}</div>
+        <p class="footer-desc">{{ company.DESCRIPTION }}</p>
+      </div>
+      <div>
+        <h2>Объекты</h2>
+        <ul>{% for p in nav_properties %}<li><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></li>{% endfor %}</ul>
+      </div>
+      <div>
+        <h2>Официальные сайты</h2>
+        <ul>{% for p in nav_properties %}<li><a href="{{ p.site_url }}">{{ p.site_host }}</a></li>{% endfor %}</ul>
+      </div>
+      <div>
+        <h2>Компания</h2>
+        <ul>
+          <li><a href="/about/">О компании</a></li>
+          <li><a href="/history/">История</a></li>
+          <li><a href="/news/">Публикации</a></li>
+          {% for p in footer_pages %}<li><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></li>{% endfor %}
+          <li><a href="/contacts/">Контакты</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {% now 'Y' %} {{ company.NAME }} · {{ company.LEGAL_NAME }}</span>
+      <a href="mailto:{{ company.EMAIL }}">{{ company.EMAIL }}</a>
+    </div>
+  </div>
+</footer>

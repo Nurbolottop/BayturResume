@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ company.NAME }} — курорт на Иссык-Куле, кумысолечение в Суусамыре, горные лыжи на Тоо-Ашуу{% endblock %}
+{% block description %}Компания «Байтур»: Baytur Resort &amp; Spa на Иссык-Куле, кымызолечебница в Суусамырской долине и горнолыжная база на перевале Тоо-Ашуу. История компании, новости и контакты.{% endblock %}
+
+{% block hero %}
+<section class="photo photo--full hero-home on-photo" aria-label="Объекты компании">
+  <div class="slides">
+    {% for p in nav_properties %}
+    <div class="slide{% if forloop.first %} is-active{% endif %}">
+      <img src="{{ p.image_url }}"{% if p.static_image and not p.image %} srcset="{{ p.image_small_url }} 960w, {{ p.image_url }} 1920w" sizes="100vw"{% endif %} alt="{{ p.name }}, {{ p.region }}" width="1920" height="1080"{% if forloop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="photo__content">
+    <div class="wrap">
+      <div class="hero-home__grid">
+        <div>
+          <span class="kicker">Группа компаний · Кыргызстан</span>
+          <h1>Отдых в горах и на Иссык-Куле</h1>
+          <p class="lead">«Байтур» — курорт на берегу озера, кымызолечебница в Суусамырской долине и горнолыжная база на перевале Тоо-Ашуу.</p>
+          <div class="actions"><a class="btn btn--light" href="/about/">О компании</a></div>
+        </div>
+        <a class="scroll-cue" href="#intro">Листайте вниз</a>
+      </div>
+      <div class="slide-nav" role="group" aria-label="Переключить объект">
+        {% for p in nav_properties %}
+        <button type="button"{% if forloop.first %} aria-current="true"{% endif %}><i class="bar"><i></i></i><strong>{{ p.name }}</strong><span>{{ p.region }}</span></button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="section" id="intro">
+  <div class="wrap statement">
+    <div>
+      <span class="kicker">О компании</span>
+      <h2 style="margin-top:18px">Три места, три сезона, одна компания</h2>
+    </div>
+    <div class="text">
+      <p>«Байтур» (Baytur) — кыргызская компания в сфере отдыха и туризма. Ей принадлежат три объекта в разных районах страны: на северном берегу Иссык-Куля, в высокогорной Суусамырской долине и на перевале Тоо-Ашуу на трассе Бишкек — Ош.</p>
+      <p>Места рассчитаны на разные сезоны и поводы для поездки: летом — озеро и кумысолечение в горах, зимой — лыжи. Здесь — о компании целиком: её история, новости и люди. Цены и бронирование — на сайтах объектов.</p>
+      <a class="link" href="/about/">Подробнее о компании →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--soft" id="objects">
+  <div class="wrap">
+    <div class="section__head"><div><span class="kicker">Объекты</span><h2 style="margin-top:16px">Места «Байтура»</h2></div></div>
+    {% for p in nav_properties %}
+    <article class="feature">
+      <a class="feature__img" href="{{ p.get_absolute_url }}" tabindex="-1" aria-hidden="true"><img src="{{ p.image_small_url }}" alt="" loading="lazy" width="960" height="720"></a>
+      <div class="feature__text">
+        <span class="feature__num">0{{ forloop.counter }} — {{ p.kind }}</span>
+        <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+        <p>{{ p.lead }}</p>
+        <div class="meta-line"><span>{{ p.region }}</span>{% if p.season %}<span>{{ p.season }}</span>{% endif %}<span>{{ p.site_host }}</span></div>
+        <div class="actions">
+          <a class="btn btn--dark" href="{{ p.get_absolute_url }}">Об объекте</a>
+          <a class="link" href="{{ p.site_url }}">{{ p.link_text }}</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <div><span class="kicker">История</span><h2 style="margin-top:16px">Как рос «Байтур»</h2></div>
+      <a class="link" href="/history/">Вся история →</a>
+    </div>
+    {% if history %}
+    <div class="history-teaser">
+      {% for e in history %}
+      <div><div class="year-small">{{ e.year }}</div><h3>{{ e.title }}</h3>{% if e.text %}<p>{{ e.text|striptags|truncatechars:140 }}</p>{% endif %}</div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">Раздел готовится: скоро здесь появится история компании — от первых проектов до сегодняшнего дня.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="band on-photo">
+  <img class="photo__img" src="{% static 'img/ski-panorama-1920.webp' %}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+  <div class="wrap">
+    <span class="kicker">Публикации</span>
+    <h2>Новости компании и истории о местах, где мы работаем</h2>
+    <a class="btn btn--light" href="/news/">Читать публикации</a>
+  </div>
+</section>
+
+{% if posts %}
+<section class="section">
+  <div class="wrap">
+    <div class="section__head"><div><span class="kicker">Свежее</span><h2 style="margin-top:16px">Последние публикации</h2></div><a class="link" href="/news/">Все публикации →</a></div>
+    <div class="posts">{% for post in posts %}{% include 'include/post_card.html' %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+
+<section class="section section--soft">
+  <div class="wrap">
+    <div class="section__head"><div><span class="kicker">Связаться</span><h2 style="margin-top:16px">Контакты объектов</h2></div><a class="link" href="/contacts/">Все контакты и реквизиты →</a></div>
+    <div class="contact-grid">{% for p in nav_properties %}{% include 'include/property_contacts.html' %}{% endfor %}</div>
+  </div>
+</section>
+{% endblock %}

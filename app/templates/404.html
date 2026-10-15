@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Страница не найдена | {{ company.NAME }}{% endblock %}
+{% block body_class %}no-photo{% endblock %}
+{% block indexing %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap statement">
+    <div><span class="kicker">Ошибка 404</span><h1 class="h2" style="margin-top:18px">Такой страницы нет</h1></div>
+    <div class="text">
+      <p>Возможно, адрес изменился. Начните с <a href="/">главной</a> или перейдите сразу на сайт нужного места.</p>
+    </div>
+  </div>
+</section>
+<section class="section section--soft">
+  <div class="wrap contact-grid">{% for p in nav_properties %}{% include 'include/property_contacts.html' %}{% endfor %}</div>
+</section>
+{% endblock %}

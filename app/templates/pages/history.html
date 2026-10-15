@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}История компании «{{ company.NAME }}»{% endblock %}
+{% block description %}История компании «Байтур»: как появились курорт на Иссык-Куле, кымызолечебница в Суусамыре и горнолыжная база на Тоо-Ашуу.{% endblock %}
+{% block og_title %}История «Байтура»{% endblock %}
+{% block indexing %}{% if years %}{{ block.super }}{% else %}<meta name="robots" content="noindex, follow">{% endif %}{% endblock %}
+
+{% block hero %}{% static 'img/resort-aerial-1920.webp' as img %}
+{% include 'include/photo_hero.html' with image=img kicker='Хроника компании' title='История «Байтура»' lead='Как появлялись и менялись места компании — год за годом.' %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="wrap">
+    {% if years %}
+    <ol class="timeline">
+      {% for year, events in years %}
+      <li class="year">
+        <div class="year__num">{{ year }}</div>
+        <div class="year__events">
+          {% for e in events %}
+          <article class="event{% if not e.image %} event--noimg{% endif %}">
+            <div>
+              {% if e.date_label %}<div class="event__date">{{ e.date_label }}</div>{% endif %}
+              <h3>{{ e.title }}</h3>
+              {% if e.text %}<div class="event__text">{{ e.text|safe }}</div>{% endif %}
+              <div class="event__tags">
+                {% for p in e.properties.all %}<a class="link" href="{{ p.get_absolute_url }}">{{ p.name }}</a>{% endfor %}
+                {% if e.post %}<a class="link" href="{{ e.post.get_absolute_url }}">Читать подробнее →</a>{% endif %}
+              </div>
+            </div>
+            {% if e.image %}<img class="event__img" src="{{ e.image.url }}" alt="{{ e.image_alt }}" loading="lazy" width="600" height="450">{% endif %}
+          </article>
+          {% endfor %}
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <div class="empty-history">
+      <h2 class="h2">Раздел готовится</h2>
+      <div class="prose">
+        <p>Здесь будет история компании «Байтур» — как появились курорт на Иссык-Куле, кымызолечебница в Суусамыре и горнолыжная база на Тоо-Ашуу, какие были ключевые события и люди.</p>
+        <p>Пока раздел наполняется, о компании можно прочитать на странице <a href="/about/">«О компании»</a>, а новости — в <a href="/news/">публикациях</a>.</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% with path=request.path %}
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="{{ company.NAME }} — на главную">{{ company.NAME }}</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню"><span></span><span></span></button>
+    <nav class="nav" id="site-nav" aria-label="Основное меню">
+      <a href="/about/"{% if path == '/about/' %} aria-current="page"{% endif %}>О компании</a>
+      <a href="/history/"{% if path == '/history/' %} aria-current="page"{% endif %}>История</a>
+      <a href="/#objects">Объекты</a>
+      <a href="/news/"{% if '/news/' in path %} aria-current="page"{% endif %}>Публикации</a>
+      {% for p in menu_pages %}<a href="{{ p.get_absolute_url }}"{% if path == p.get_absolute_url %} aria-current="page"{% endif %}>{{ p.title }}</a>{% endfor %}
+      <a href="/contacts/"{% if path == '/contacts/' %} aria-current="page"{% endif %}>Контакты</a>
+    </nav>
+  </div>
+</header>
+{% endwith %}

@@ -1,0 +1,88 @@
+{% load static seo %}<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ company.NAME }} — {{ company.TAGLINE }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ company.DESCRIPTION }}{% endblock %}">
+  {% block indexing %}
+  {% if noindex %}
+  <meta name="robots" content="noindex, follow">
+  {% else %}
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="{{ canonical }}">
+  {% comment %}
+    Пока сайт только на русском: одна языковая версия плюс x-default на неё же.
+    Когда появятся /en/ и /ky/ с настоящим переводом — добавить их сюда.
+  {% endcomment %}
+  <link rel="alternate" hreflang="ru" href="{{ canonical }}">
+  <link rel="alternate" hreflang="x-default" href="{{ canonical }}">
+  {% endif %}
+  {% endblock %}
+  <link rel="alternate" type="text/markdown" title="Справка о компании для ИИ-ассистентов" href="/llms.txt">
+
+  <meta property="og:type" content="{{ og_type|default:'website' }}">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="{{ company.NAME }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:title" content="{% block og_title %}{{ company.NAME }} — {{ company.TAGLINE }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ company.DESCRIPTION }}{% endblock %}">
+  {% if og_image %}<meta property="og:image" content="{% if 'http' not in og_image %}{{ site_url }}{% endif %}{{ og_image }}">
+  {% else %}<meta property="og:image" content="{{ site_url }}{% static 'img/og.jpg' %}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">{% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#101315">
+
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% page_jsonld %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% include 'include/header.html' %}
+
+  <main id="content">
+    {% block hero %}{% endblock %}
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'include/footer.html' %}
+
+  <script>
+    (function () {
+      var header = document.querySelector('.site-header');
+      var btn = document.querySelector('.menu-toggle');
+      function onScroll() { header.classList.toggle('is-solid', window.scrollY > 40); }
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      if (btn) btn.addEventListener('click', function () {
+        var open = header.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      // Слайдер на главной: смена объектов раз в 7 секунд, клик — переключение
+      var slides = document.querySelectorAll('.slide');
+      var tabs = document.querySelectorAll('.slide-nav button');
+      if (slides.length < 2) return;
+      var current = 0, timer;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function show(i) {
+        slides[current].classList.remove('is-active');
+        tabs[current].removeAttribute('aria-current');
+        current = i;
+        slides[current].classList.add('is-active');
+        tabs[current].setAttribute('aria-current', 'true');
+        document.querySelectorAll('[data-slide-text]').forEach(function (el) {
+          el.hidden = el.getAttribute('data-slide-text') !== String(current);
+        });
+        if (!reduce) { clearTimeout(timer); timer = setTimeout(function () { show((current + 1) % slides.length); }, 7000); }
+      }
+      tabs.forEach(function (tab, i) { tab.addEventListener('click', function () { show(i); }); });
+      show(0);
+    })();
+  </script>
+</body>
+</html>

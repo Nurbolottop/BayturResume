@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}О компании «{{ company.NAME }}» (Baytur): курорт, кымызолечебница и горнолыжная база в Кыргызстане{% endblock %}
+{% block description %}«Байтур» (Baytur) — кыргызская компания, которой принадлежат Baytur Resort &amp; Spa на Иссык-Куле, кымызолечебница в Суусамыре и горнолыжная база на Тоо-Ашуу. Факты, сайты объектов, реквизиты.{% endblock %}
+{% block og_title %}О компании «Байтур»{% endblock %}
+
+{% block hero %}{% static 'img/resort-aerial-1920.webp' as img %}
+{% include 'include/photo_hero.html' with image=img kicker='Группа компаний' title='О компании «Байтур»' lead=company.DESCRIPTION %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="wrap article-layout">
+    <div class="prose">
+      <h2 style="margin-top:0">Коротко</h2>
+      <ul>
+        <li><strong>Название:</strong> «Байтур», латиницей — Baytur.</li>
+        <li><strong>Страна:</strong> Кыргызстан.</li>
+        <li><strong>Чем занимается:</strong> отдых и туризм — курортный отдых на Иссык-Куле, кумысолечение в горах, горнолыжный отдых.</li>
+        <li><strong>Объектов:</strong> три, в трёх разных районах страны. У каждого — свой официальный сайт на домене baytur.kg.</li>
+        <li><strong>Юридическое лицо:</strong> {{ company.LEGAL_NAME }}, ИНН {{ company.INN }}.</li>
+      </ul>
+
+      <h2>Объекты компании</h2>
+      {% for p in nav_properties %}
+      <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+      <p>{{ p.kind }}, {{ p.region }}{% if p.season %}, {{ p.season|lower }}{% endif %}. {{ p.lead }} Официальный сайт — <a href="{{ p.site_url }}">{{ p.site_host }}</a>.</p>
+      {% endfor %}
+
+      <h2>Как устроена группа</h2>
+      <p>Три объекта не дублируют друг друга: они в разных местах и рассчитаны на разные поводы для поездки. Иссык-Куль — озеро, пляж и SPA; Суусамыр — летнее кумысолечение в горной долине; Тоо-Ашуу — зимний горнолыжный сезон. Вместе они закрывают и летний, и зимний сезон.</p>
+      <p>Каждый объект ведёт собственный сайт, где опубликованы цены, номера, услуги и бронирование. Этот сайт, baytur.kg, — корпоративный: он рассказывает о компании, связывает три объекта и публикует новости группы. Бронирований он не принимает.</p>
+
+      <h2>Как не перепутать</h2>
+      <p>Под названием «Байтур» работают три разных места. Если вы ищете:</p>
+      <ul>
+        {% for p in nav_properties %}<li>{{ p.kind|lower }} ({{ p.region }}) — это <a href="{{ p.site_url }}">{{ p.site_host }}</a>;</li>{% endfor %}
+        <li>общие сведения о компании, реквизиты и новости — этот сайт.</li>
+      </ul>
+      <p>Адрес baytur-resort.kg, который встречается в старых ссылках, не работает и не является сайтом ни одного из объектов.</p>
+
+      <h2>Юридические данные</h2>
+      <dl class="requisites">
+        <div><dt>Юридическое лицо</dt><dd>{{ company.LEGAL_NAME }}</dd></div>
+        <div><dt>ИНН</dt><dd>{{ company.INN }}</dd></div>
+        <div><dt>ОКПО</dt><dd>{{ company.OKPO }}</dd></div>
+        <div><dt>Адрес</dt><dd>{{ company.ADDRESS_LINE }}</dd></div>
+        <div><dt>Почта</dt><dd><a href="mailto:{{ company.EMAIL }}">{{ company.EMAIL }}</a></dd></div>
+      </dl>
+    </div>
+    <aside class="aside">
+      <div class="contact-col">
+        <h3>Связаться с компанией</h3>
+        <ul class="contact-list">
+          {% for phone in company.PHONES %}<li><a class="big" href="tel:{{ phone|cut:' ' }}">{{ phone }}</a></li>{% endfor %}
+          <li><a href="mailto:{{ company.EMAIL }}">{{ company.EMAIL }}</a></li>
+        </ul>
+        <a class="link" href="/contacts/">Контакты объектов →</a>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

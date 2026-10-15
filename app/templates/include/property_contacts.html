@@ -1,0 +1,10 @@
+<div class="contact-col">
+  <span class="kicker">{{ p.region }}</span>
+  <h3>{{ p.name }}</h3>
+  <ul class="contact-list">
+    {% if p.phone %}<li><a class="big" href="tel:{{ p.phone|cut:' ' }}">{{ p.phone }}</a>{% if p.phone_note %} <span class="note">{{ p.phone_note }}</span>{% endif %}</li>{% endif %}
+    {% if full and p.address %}<li>{{ p.address }}</li>{% endif %}
+    {% if full and p.instagram %}<li><a href="{{ p.instagram }}" rel="noopener">Instagram</a></li>{% endif %}
+    <li><a href="{{ p.site_url }}">{{ p.site_host }}</a></li>
+  </ul>
+</div>
